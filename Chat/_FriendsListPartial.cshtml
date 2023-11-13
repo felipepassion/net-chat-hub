@@ -1,0 +1,37 @@
+﻿@model IEnumerable<CadeMinhaRepublica.Application.DTO.Aggregate.Republic.Response.GetConversationResponseDTO>
+    
+    <div id="friends" class="floating-menu friends-container">
+
+        @if (Model?.Any() == true)
+        {
+            foreach (var conv in Model)
+            {
+                @await Html.PartialAsync("Chat/_FriendListItemPartial", conv);
+                <script>
+                    setNotificationCounter(@(conv.NotReadMessagesCount), true);
+                </script>
+            }
+        }
+
+        @if (Model?.Any(x => x.IsDefault == false) != true)
+        {
+            <p class="not-found-msg">Não há conversas</p>
+        }
+
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <p onclick="openLoginModal()" class="main-txt-color txt">
+                <span onclick="openLoginModal()">
+                    <span class="main-success-color">Clique aqui</span>
+                    e
+                    <span class="main-success-color">faça login </span>
+                    p/ acessar o
+                    <span class="main-success-color">Painel</span>
+                </span>
+            </p>
+        }
+
+        @*<div id="search">
+                <input type="text" id="searchfield" value="Procurar contatos..." />
+            </div>*@
+    </div>

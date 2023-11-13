@@ -1,0 +1,45 @@
+﻿@model IEnumerable<CadeMinhaRepublica.Application.DTO.Aggregate.Republic.Response.GetConversationResponseDTO>
+
+@if (ViewBag.IsFragment == true)
+{
+    <div id="chatbox">
+        <div id="friendslist">
+            @await Html.PartialAsync("Chat/_ChatTopMenuPartial")
+            @await Html.PartialAsync("Chat/_FriendsListPartial")
+            @await Html.PartialAsync("Chat/_UserMenuPartial")
+            @await Html.PartialAsync("Chat/_NotificationsPartial")
+        </div>
+    </div>
+
+    @*@await Html.PartialAsync("_AsyncModalPartial",
+                        new CadeMinhaRepublica.Application.DTO.Aggregate.Common.CreateAsyncModalRequestDTO(
+                            url: "/notifications/pendings",
+                            classes: "pending-notifications"))*@
+
+    <footer>
+        <script>
+            initAsyncModals($(".pending-notifications"));
+            initSignalR();
+        </script>
+        @if (ViewBag.NinhoChat != null)
+        {
+            @*<script>
+                    addConversation('@ViewBag.NinhoChat.Id', '@ViewBag.NinhoChat.Name', false);
+                    addMessage('@ViewBag.NinhoChat.Id', 'Utilize este chat para entrar em contato com a nossa equipe Ninho!')
+                    addMessage('@ViewBag.NinhoChat.Id', 'Mande suas dúvidas, feedbacks ou melhorias!', false);
+                </script>*@
+        }
+    </footer>
+}
+else
+{
+    <div class="async-modal">
+        <form action="/chat/conversations" method="post">
+            @Html.AntiForgeryToken()
+            <span class="loading-txt">Carregando Menu...</span>
+            <img src="/images/loading.gif" style="width:30px;height:30px;" />
+        </form>
+    </div>
+
+    <script async defer src="/js/chat.js"></script>
+}

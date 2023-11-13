@@ -1,0 +1,55 @@
+﻿@model CadeMinhaRepublica.Application.DTO.Aggregate.Republic.Response.GetConversationResponseDTO
+
+<div id="chatview" class="p1 @(Model.IsDefault ? "default" : "")">
+
+    <div id="profile">
+
+        <div id="close">
+            <div class="cy"></div>
+            <div class="cx"></div>
+        </div>
+
+        <p class="user-name">@Model?.To?.Name</p>
+        <span class="user-contact">@Model?.To?.Email</span>
+    </div>
+
+    <div id="chat-messages" to="@Model?.GetOther(ViewBag.MyId)?.Id">
+        <label class="created-at">@((Model?.CreatedAt ?? DateTime.Now).ToString("dd/MM/yyyy"))</label>
+        @if (Model?.Messages != null)
+        {
+            <div class="messages-container">
+                <div class="await-modal">
+                    <form action="/chat/conversations/@ViewBag.OtherId" method="post">
+                        @Html.AntiForgeryToken()
+                        <input class="message-input" type="hidden" name="lastMessageIds" value="@string.Join(",",Model?.Messages?.Where(x=>!x.IsDefault).Select(x=>x.Id))" />
+                        <span class="loading-txt">Carregando mensagens...</span>
+                        <img src="/images/loading.gif" style="width:30px;height:30px;" />
+                        @await Html.PartialAsync("Chat/_ChatMessagesContainerPartial", Model);
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+    @{
+        var btnId = Guid.NewGuid().ToString();
+    }
+    <div id="sendmessage" class="@btnId" to="@Model?.GetOther(ViewBag.MyId)?.Id">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <input type="text" onkeyup="onSendMsgKeyUp(event, this)" placeholder="Enviar mensagem..." />
+            <button class="@btnId"><i class="fa fa-send-o"></i></button>
+        }
+        else
+        {
+
+        }
+    </div>
+</div>
+
+<script>
+    function onSendMsgKeyUp(ev, self) {
+        if (ev.keyCode === 13) {
+            $(self).parent().find('button').click();
+        }
+    }
+</script>

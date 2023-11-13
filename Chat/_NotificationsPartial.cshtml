@@ -1,0 +1,20 @@
+﻿<div class="floating-menu notifications-container">
+    
+    <ul>
+        <li><a><h1>Não há notificações</h1></a></li>
+
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <li onclick="openLoginModal()" class="main-txt-color txt">
+                <span onclick="openLoginModal()">
+                    <span class="main-success-color">Clique aqui</span>
+                    e
+                    <span class="main-success-color">faça login </span>
+                    p/ acessar o
+                    <span class="main-success-color">Painel</span>
+                </span>
+            </li>
+        }
+    </ul>
+
+</div>

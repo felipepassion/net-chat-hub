@@ -1,0 +1,33 @@
+﻿@model CadeMinhaRepublica.Application.DTO.Aggregate.Republic.Response.GetConversationResponseDTO
+@using GetUserWithContactsResponseDTO = CadeMinhaRepublica.Application.DTO.Aggregate.User.Response.GetUserWithContactsResponseDTO
+
+@{
+    GetUserWithContactsResponseDTO other = Model.GetOther(ViewBag.MyId);
+    ViewBag.OtherId = other?.Id;
+}
+
+<div class="chat-container" id="@Model.Id">
+    <div class="friend @(Model.IsDefault ? "default":"")" other-id="@other?.Id">
+        @if (Model.IsDefault)
+        {
+            <img class="user-img" src='/images/avatar/1.jpg' onerror="this.src='/images/avatar/1.jpg'" alt="">
+        }
+        else
+        {
+            <img class="user-img" src='@(other?.HasProfilePicture ==true ? CadeMinhaRepublica.Utils.BucketUriHelper.BuildUserProfilePictureUrl(other?.Id) : "/images/avatar/1.jpg")' onerror="this.src='/images/avatar/1.jpg'" alt="">
+        }
+        <p class="conversation-name-container">
+            <strong class="user-name">@($"{(other?.Name?.Length > 20 == true ? $"{other?.Name?.Substring(0,20)}..." : other?.Name)}")</strong>
+            @{
+                var lastMessage = Model.Messages?.LastOrDefault();
+            }
+            <span class="last-message">@($"{(lastMessage?.Message?.Length > 25 == true ? $"{lastMessage.Message.Substring(0,25)}..." : lastMessage?.Message)}")</span>
+        </p>
+        <div class="status @lastMessage?.StatusStr"></div>
+        <span class="time">@lastMessage?.LastSentTime</span>
+        <button class="conversation not-read-counter @(Model.NotReadMessagesCount > 0 ? "active" : "")">
+            <p class="conversation-counter">@Model.NotReadMessagesCount</p>
+        </button>
+    </div>
+    @await Html.PartialAsync("Chat/_ChatMessagesPartial", Model)
+</div>

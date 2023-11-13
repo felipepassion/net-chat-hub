@@ -1,0 +1,22 @@
+﻿@model CadeMinhaRepublica.Application.DTO.Aggregate.Republic.Response.GetConversationResponseDTO
+@using GetUserWithContactsResponseDTO = CadeMinhaRepublica.Application.DTO.Aggregate.User.Response.GetUserWithContactsResponseDTO;
+
+@{
+    GetUserWithContactsResponseDTO me = Model.GetMe(ViewBag.MyId);
+    GetUserWithContactsResponseDTO other = Model.GetOther(ViewBag.MyId);
+}
+
+@foreach (var message in Model?.Messages)
+{
+    bool mine = ViewBag.MyId == message.FromId;
+    <div class="message @(mine ? "right" : "") @(message.IsDefault ? "default" : "")">
+        <img class="user-img" src='@(CadeMinhaRepublica.Utils.BucketUriHelper.BuildUserProfilePictureUrl(mine ? (me?.HasProfilePicture == true ? me?.Id : null) : (other?.HasProfilePicture == true ? other?.Id : null)))' onerror="this.src='/images/avatar/1.jpg'" alt="" />
+        <div class="bubble">
+            <p class="message-txt">
+                @message.Message
+            </p>
+            <div class="corner"></div>
+            <span class="time">@message.LastSentTime</span>
+        </div>
+    </div>
+}

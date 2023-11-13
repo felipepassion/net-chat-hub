@@ -1,0 +1,37 @@
+﻿@using BucketUriHelper = CadeMinhaRepublica.Utils.BucketUriHelper;
+
+<div id="topmenu">
+    <span class="friends alt-tip" onmouseover="onUserMenuCLick(this)" onclick="onUserMenuCLick(this)">
+        <span class="tip">Mensagens</span>
+    </span>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <span onmouseover="onUserMenuCLick(this)" onclick="onUserMenuCLick(this)" class="user-menu alt-tip">
+            <span onclick="hideChat()" class="tip">Menu</span>
+            <img class="profile-picture" onerror="this.src='/images/avatar/1.jpg'" src="@(BucketUriHelper.BuildUserProfilePictureUrl(ViewBag.MyId))" alt="" />
+        </span>
+    }
+    else
+    {
+        <span onmouseover="onUserMenuCLick(this)" onclick="onUserMenuCLick(this);" class="user-menu alt-tip">
+            <span onclick="hideChat()" class="tip">Menu</span>
+            <img class="profile-picture" src="/images/avatar/1.jpg" onclick="openLoginModal()" />
+        </span>
+    }
+    <span onmouseover="onUserMenuCLick(this)" onclick="onUserMenuCLick(this)" class="notifications alt-tip">
+        <span class="tip">Notificações</span>
+    </span>
+
+    <p class="menu-user-name">
+        <span onmouseover="onUserMenuCLick(document.getElementsByClassName('user-menu'))" onclick="onUserMenuCLick(document.getElementsByClassName('user-menu'))">
+            @if (User.Identity.IsAuthenticated)
+            {
+                @(Context.Request.Cookies["Name"])
+            }
+            else
+            {
+                <span onclick="openLoginModal();">Usuário</span>
+            }
+        </span>
+    </p>
+</div>

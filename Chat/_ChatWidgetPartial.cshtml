@@ -1,0 +1,23 @@
+﻿<div class="chat-widget_wrap not-vis-chat">
+    <div class="chat-body">
+        <!-- message-->
+        @await Html.PartialAsync("Chat/_ChatConversationsFragment",
+            new CadeMinhaRepublica.Application.DTO.Aggregate.Republic.Response.GetConversationResponseDTO[0])
+        <!-- message end-->
+    </div>
+</div>
+
+<div class="chat-widget-button">
+    <button class="not-read-counter">
+        <p class="chat-counter">0</p>
+    </button>
+    <i class="fa fa-comments-o">
+    </i>
+    <span>Minhas mensagens</span>
+</div>
+
+<script>
+    $(document).ready(function () {
+        setupChatWidget();
+    });
+</script>
